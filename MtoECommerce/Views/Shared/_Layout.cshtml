@@ -19,7 +19,9 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                        @* @await Component.InvokeAsync("Menu") *@
+                        <li class="nav-item">
+                            <a asp-area="Admin" asp-controller="Dashboard" asp-action="Index" class="nav-link text-dark">Admin Dashboard</a>
+                        </li>
                         <vc:menu />
                     </ul>
                 </div>
