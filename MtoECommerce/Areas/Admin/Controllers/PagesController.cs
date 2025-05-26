@@ -16,5 +16,10 @@ namespace MtoECommerce.Areas.Admin.Controllers
 
             return View(pages);
         }
+
+        public IActionResult Create()
+        {
+            return View();
+        }
     }
 }
