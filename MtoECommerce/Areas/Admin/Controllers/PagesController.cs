@@ -17,9 +17,37 @@ namespace MtoECommerce.Areas.Admin.Controllers
             return View(pages);
         }
 
+        [HttpGet]
         public IActionResult Create()
         {
             return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(Page page)
+        {
+            if (ModelState.IsValid) 
+            {
+                page.Slug = page.Title.ToLower().Replace(" ", "-");
+
+                var slug = await _context.Pages.FirstOrDefaultAsync(x => x.Slug == page.Slug);
+
+                if (slug != null)
+                {
+                    ModelState.AddModelError("", "That page already exists!");
+                    return View(page);
+                }
+
+                _context.Add(page);
+                await _context.SaveChangesAsync();
+
+                TempData["Success"] = "The page has been added!";
+                
+                return RedirectToAction("Index");
+            }
+
+            return View(page);
         }
     }
 }
