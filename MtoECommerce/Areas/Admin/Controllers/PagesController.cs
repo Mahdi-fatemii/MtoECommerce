@@ -27,7 +27,7 @@ namespace MtoECommerce.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Page page)
         {
-            if (ModelState.IsValid) 
+            if (ModelState.IsValid)
             {
                 page.Slug = page.Title.ToLower().Replace(" ", "-");
 
@@ -43,7 +43,7 @@ namespace MtoECommerce.Areas.Admin.Controllers
                 await _context.SaveChangesAsync();
 
                 TempData["Success"] = "The page has been added!";
-                
+
                 return RedirectToAction("Index");
             }
 
@@ -64,7 +64,7 @@ namespace MtoECommerce.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                page.Slug = page.Id ==1 ? "home" : page.Title.ToLower().Replace(" ", "-");
+                page.Slug = page.Id == 1 ? "home" : page.Title.ToLower().Replace(" ", "-");
 
                 var slug = await _context.Pages.FirstOrDefaultAsync(x => x.Slug == page.Slug && x.Id != page.Id);
 
@@ -82,6 +82,22 @@ namespace MtoECommerce.Areas.Admin.Controllers
             }
 
             return View(page);
+        }
+
+        public async Task<IActionResult> Delete(int id)
+        {
+            Page page = await _context.Pages.FindAsync(id);
+            if (page == null || id == 1)
+            {
+                TempData["Error"] = "The page does not exist!";
+            }
+            else
+            {
+                _context.Pages.Remove(page);
+                await _context.SaveChangesAsync();
+            }
+
+            return RedirectToAction("Index");
         }
     }
 }
