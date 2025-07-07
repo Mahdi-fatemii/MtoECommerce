@@ -49,5 +49,39 @@ namespace MtoECommerce.Areas.Admin.Controllers
 
             return View(page);
         }
+
+        public async Task<IActionResult> Edit(int id)
+        {
+            Page page = await _context.Pages.FindAsync(id);
+            if (page == null) { return NotFound(); }
+
+            return View(page);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(Page page)
+        {
+            if (ModelState.IsValid)
+            {
+                page.Slug = page.Id ==1 ? "home" : page.Title.ToLower().Replace(" ", "-");
+
+                var slug = await _context.Pages.FirstOrDefaultAsync(x => x.Slug == page.Slug && x.Id != page.Id);
+
+                if (slug != null)
+                {
+                    ModelState.AddModelError("", "That page already exists!");
+                    return View(page);
+                }
+
+                _context.Update(page);
+                await _context.SaveChangesAsync();
+
+                TempData["Success"] = "The page has been edited!";
+
+            }
+
+            return View(page);
+        }
     }
 }
