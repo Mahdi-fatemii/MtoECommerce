@@ -30,12 +30,17 @@ namespace MtoECommerce.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Body")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Order")
+                        .HasColumnType("int");
 
                     b.Property<string>("Slug")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Title")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -47,6 +52,7 @@ namespace MtoECommerce.Migrations
                         {
                             Id = 1,
                             Body = "This is the home page",
+                            Order = 0,
                             Slug = "home",
                             Title = "Home"
                         },
@@ -54,6 +60,7 @@ namespace MtoECommerce.Migrations
                         {
                             Id = 2,
                             Body = "This is the about page",
+                            Order = 0,
                             Slug = "about",
                             Title = "About"
                         },
@@ -61,6 +68,7 @@ namespace MtoECommerce.Migrations
                         {
                             Id = 3,
                             Body = "This is the services page",
+                            Order = 0,
                             Slug = "services",
                             Title = "Services"
                         },
@@ -68,6 +76,7 @@ namespace MtoECommerce.Migrations
                         {
                             Id = 4,
                             Body = "This is the contact page",
+                            Order = 0,
                             Slug = "contact",
                             Title = "Contact"
                         });

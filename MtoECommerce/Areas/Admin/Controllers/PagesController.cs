@@ -12,7 +12,7 @@ namespace MtoECommerce.Areas.Admin.Controllers
 
         public async Task<IActionResult> Index()
         {
-            List<Page> pages = await _context.Pages.ToListAsync();
+            List<Page> pages = await _context.Pages.OrderBy(x => x.Order).ToListAsync();
 
             return View(pages);
         }
@@ -38,6 +38,8 @@ namespace MtoECommerce.Areas.Admin.Controllers
                     ModelState.AddModelError("", "That page already exists!");
                     return View(page);
                 }
+
+                page.Order = 100;
 
                 _context.Add(page);
                 await _context.SaveChangesAsync();
@@ -98,6 +100,21 @@ namespace MtoECommerce.Areas.Admin.Controllers
             }
 
             return RedirectToAction("Index");
+        }
+
+        public void ReorderPages(int[] id)
+        {
+            int count = 1;
+
+            foreach(var pageId in id)
+            {
+                var page = _context.Pages.Find(pageId);
+                page.Order = count;
+
+                _context.SaveChanges();
+
+                count++;
+            }
         }
     }
 }

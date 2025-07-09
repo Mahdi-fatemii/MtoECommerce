@@ -13,5 +13,7 @@ namespace MtoECommerce.Models
 
         [Required, MinLength(10, ErrorMessage = "Minimum Length is 10")]
         public string Body { get; set; }
+
+        public int Order {  get; set; }
     }
 }
