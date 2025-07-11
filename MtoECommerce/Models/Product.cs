@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using MtoECommerce.Infrastructure.Validation;
 
 namespace MtoECommerce.Models
 {
@@ -27,6 +28,7 @@ namespace MtoECommerce.Models
         public string Image { get; set; } = "noimage.png";
 
         [NotMapped]
+        [FileExtension]
         public IFormFile ImageUpload { get; set; }
     
     }
