@@ -27,7 +27,7 @@ namespace MtoECommerce.Infrastructure
                         Description = "A Nice Blue Polo Shirt for Men",
                         Price = 22.79M,
                         CategoryId = 1,
-                        Image = "PoloShirt.jpg"
+                        Image = "PoloShirt.jpeg"
                     },
 
                     new Product
@@ -38,7 +38,7 @@ namespace MtoECommerce.Infrastructure
                         Description = "Black Strappy Volume-Hem Midi Dress",
                         Price = 127.99M,
                         CategoryId = 2,
-                        Image = "BlackDress1.jpg"
+                        Image = "BlackDress1.jpeg"
                     },
 
                     new Product
@@ -49,7 +49,7 @@ namespace MtoECommerce.Infrastructure
                         Description = "Lemon Asymmetric Neckline High-Split Maxi Dress",
                         Price = 132.69M,
                         CategoryId = 2,
-                        Image = "LemonDress1.jpg"
+                        Image = "LemonDress1.jpeg"
                     },
 
                     new Product
@@ -60,7 +60,7 @@ namespace MtoECommerce.Infrastructure
                         Description = "Navy & White Stripe Pure Linen Slim Shirt – Button Down Collar",
                         Price = 75.32M,
                         CategoryId = 1,
-                        Image = "StripyShirt1.jpg"
+                        Image = "StripyShirt1.jpeg"
                     },
                     
                     new Product
@@ -71,7 +71,7 @@ namespace MtoECommerce.Infrastructure
                         Description = "Pink Strappy Volume-Hem Midi Dress",
                         Price = 110.89M,
                         CategoryId = 2,
-                        Image = "PinkDress1.jpg"
+                        Image = "PinkDress1.jpeg"
                     },
                     
                     
@@ -83,7 +83,7 @@ namespace MtoECommerce.Infrastructure
                         Description = "Crafted from 100% cotton sateen and cut for a tailored fit. With a classic cutaway collar, mitred cuffs, and a slight sheen from the lustrous fabric, these are the ultimate statement shirts. This shirt features accents of our Name Of The Rose Print.",
                         Price = 106.14M,
                         CategoryId = 1,
-                        Image = "RedShirt1.jpg"
+                        Image = "RedShirt1.jpeg"
                     }
                 );
 
