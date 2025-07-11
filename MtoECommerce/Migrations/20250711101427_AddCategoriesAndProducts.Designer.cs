@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MtoECommerce.Infrastructure;
 
@@ -10,9 +11,11 @@ using MtoECommerce.Infrastructure;
 namespace MtoECommerce.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20250711101427_AddCategoriesAndProducts")]
+    partial class AddCategoriesAndProducts
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -38,20 +41,6 @@ namespace MtoECommerce.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "Shirts",
-                            Slug = "shirts"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Dress",
-                            Slug = "dress"
-                        });
                 });
 
             modelBuilder.Entity("MtoECommerce.Models.Page", b =>
@@ -148,68 +137,6 @@ namespace MtoECommerce.Migrations
                     b.HasIndex("CategoryId");
 
                     b.ToTable("Products");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CategoryId = 1,
-                            Description = "A Nice Blue Polo Shirt for Men",
-                            Image = "PoloShirt.jpg",
-                            Name = "Polo Shirt",
-                            Price = 22.79m,
-                            Slug = "polo-shirt"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CategoryId = 2,
-                            Description = "Black Strappy Volume-Hem Midi Dress",
-                            Image = "BlackDress1.jpg",
-                            Name = "Parina Black Dress",
-                            Price = 127.99m,
-                            Slug = "parina-black-dress"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            CategoryId = 2,
-                            Description = "Lemon Asymmetric Neckline High-Split Maxi Dress",
-                            Image = "LemonDress1.jpg",
-                            Name = "Beth Lemon Dress",
-                            Price = 132.69m,
-                            Slug = "beth-lemon-dress"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            CategoryId = 1,
-                            Description = "Navy & White Stripe Pure Linen Slim Shirt – Button Down Collar",
-                            Image = "StripyShirt1.jpg",
-                            Name = "Navy & White Stripe Shirt",
-                            Price = 75.32m,
-                            Slug = "stripe-shirt"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            CategoryId = 2,
-                            Description = "Pink Strappy Volume-Hem Midi Dress",
-                            Image = "PinkDress1.jpg",
-                            Name = "Parina Pink Dress",
-                            Price = 110.89m,
-                            Slug = "parina-pink-dress"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            CategoryId = 1,
-                            Description = "Crafted from 100% cotton sateen and cut for a tailored fit. With a classic cutaway collar, mitred cuffs, and a slight sheen from the lustrous fabric, these are the ultimate statement shirts. This shirt features accents of our Name Of The Rose Print.",
-                            Image = "RedShirt1.jpg",
-                            Name = "Burgundy Sateen Shirt",
-                            Price = 106.14m,
-                            Slug = "burgundy-sateen-shirt"
-                        });
                 });
 
             modelBuilder.Entity("MtoECommerce.Models.Product", b =>
