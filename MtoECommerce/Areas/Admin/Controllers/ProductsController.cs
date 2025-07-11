@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using MtoECommerce.Infrastructure;
@@ -17,5 +18,11 @@ namespace MtoECommerce.Areas.Admin.Controllers
             return View(Products);
         }
 
+        public ActionResult Create()
+        {
+            ViewBag.Categories = new SelectList(_context.Categories, "Id", "Name");
+
+            return View();
+        }
     }
 }
