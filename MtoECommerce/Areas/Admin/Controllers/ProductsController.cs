@@ -20,7 +20,7 @@ namespace MtoECommerce.Areas.Admin.Controllers
             return View(Products);
         }
 
-        public ActionResult Create()
+        public IActionResult Create()
         {
             ViewBag.Categories = new SelectList(_context.Categories, "Id", "Name");
 
@@ -73,6 +73,74 @@ namespace MtoECommerce.Areas.Admin.Controllers
                 TempData["Success"] = "The product has been added!";
 
                 return RedirectToAction("Index");
+            }
+
+            return View(product);
+        }
+
+
+        public async Task<IActionResult> Edit(int id)
+        {
+            Product product = await _context.Products.FindAsync(id);
+            
+            if (product == null) { return NotFound(); }
+
+            ViewBag.Categories = new SelectList(_context.Categories, "Id", "Name", product.CategoryId);
+
+            return View(product);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(Product product)
+        {
+            ViewBag.Categories = new SelectList(_context.Categories, "Id", "Name", product.CategoryId);
+
+            if (ModelState.IsValid)
+            {
+                product.Slug = product.Name.ToLower().Replace(" ", "-");
+
+                var slug = await _context.Products.Where(x => x.Id != 
+                    product.Id).FirstOrDefaultAsync(x => x.Slug == product.Slug);
+
+                if (slug != null)
+                {
+                    ModelState.AddModelError("", "That product is already exists!");
+                    return View(product);
+                }
+
+                if (product.ImageUpload != null)
+                {
+                    string uploadsDir = Path.Combine
+                        (_webHostEnvironment.WebRootPath, "media/products");
+
+                    if (!string.Equals(product.Image, "noimage.png"))
+                    {
+                        string oldImagePath = Path.Combine(uploadsDir, product.Image);
+
+                        if (System.IO.File.Exists(oldImagePath))
+                        {
+                            System.IO.File.Delete(oldImagePath);
+                        }
+                    }
+                    string imageName = Guid.NewGuid().ToString() + "_" + product.ImageUpload.FileName;
+
+                    string filePath = Path.Combine(uploadsDir, imageName);
+
+                    FileStream fs = new FileStream(filePath, FileMode.Create);
+
+                    await product.ImageUpload.CopyToAsync(fs);
+                    fs.Close();
+
+                    product.Image = imageName;
+                }
+
+                _context.Update(product);
+                await _context.SaveChangesAsync();
+
+                TempData["Success"] = "The product has been Edited!";
+
+                return RedirectToAction("Edit", new { product.Id });
             }
 
             return View(product);

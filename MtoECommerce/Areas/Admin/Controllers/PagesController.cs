@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using MtoECommerce.Infrastructure;
+using MtoECommerce.Models;
 
 namespace MtoECommerce.Areas.Admin.Controllers
 {
@@ -80,6 +81,8 @@ namespace MtoECommerce.Areas.Admin.Controllers
                 await _context.SaveChangesAsync();
 
                 TempData["Success"] = "The page has been edited!";
+
+                return RedirectToAction("Edit", new { page.Id });
 
             }
 
