@@ -1,59 +1,82 @@
 ﻿@model IEnumerable<Product>
 
 @{
-    ViewData["Title"] = "Products";
+	ViewData["Title"] = "Products";
 }
 
 <h1>Products</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+	<a asp-action="Create">Create New</a>
 </p>
 
+<select id="SelectCategory" class="form-control" asp-items="ViewBag.Categories">
+	<option value="0">All</option>
+</select>
+
 <table class="table">
-    <thead>
-        <tr>
-            <th>
-                Name
-            </th>
-            <th>
-                Slug
-            </th>
-            <th>
-                Price
-            </th>
-            <th>
-                Category
-            </th>
-            <th>
-                Image
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @item.Name
-            </td>
-            <td>
-                @item.Slug
-            </td>
-            <td>
-                @item.Price
-            </td>
-            <td>
-                @item.Category.Name
-            </td>
-            <td>
-                <img src="/media/products/@item.Image" width="100" alt="" />
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Delete" class="confirm" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
+	<thead>
+		<tr>
+			<th>
+				Name
+			</th>
+			<th>
+				Slug
+			</th>
+			<th>
+				Price
+			</th>
+			<th>
+				Category
+			</th>
+			<th>
+				Image
+			</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var item in Model)
+		{
+			<tr>
+				<td>
+					@item.Name
+				</td>
+				<td>
+					@item.Slug
+				</td>
+				<td>
+					@item.Price
+				</td>
+				<td>
+					@item.Category.Name
+				</td>
+				<td>
+					<img src="/media/products/@item.Image" width="100" alt="" />
+				</td>
+				<td>
+					<a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+					<a asp-action="Delete" class="confirm" asp-route-id="@item.Id">Delete</a>
+				</td>
+			</tr>
+		}
+	</tbody>
 </table>
+
+@section Scripts {
+
+	<script>
+		$("#SelectCategory").on("change", function()
+		{
+			const categoryId = $(this).val();
+
+			if (categoryId)
+			{
+				window.location = "/admin/products?categoryId=" + categoryId;
+			}
+
+			return false;
+		});
+	</script>
+}
+

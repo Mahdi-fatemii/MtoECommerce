@@ -14,9 +14,16 @@ namespace MtoECommerce.Areas.Admin.Controllers
         private readonly DataContext _context = context;
         private readonly IWebHostEnvironment _webHostEnvironment = webHostEnvironment;
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int categoryId = 0)
         {
-            List<Product> Products = await _context.Products.Include(x => x.Category).OrderBy(x => x.CategoryId).ToListAsync();
+
+            ViewBag.Categories = new SelectList(_context.Categories, "Id", "Name", categoryId.ToString());
+
+            List<Product> Products = await _context.Products.
+                Where(x => categoryId == 0 || x.CategoryId == categoryId).
+                Include(x => x.Category).
+                OrderBy(x => x.CategoryId).
+                ToListAsync();
 
             return View(Products);
         }
