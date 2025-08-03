@@ -65,7 +65,8 @@
 		@foreach (var image in Model.GalleryImages)
 		{
 			<div class="col-2">
-				<img class="img-fluid" src="/media/gallery/@Model.Id/@image" alt="" />
+				<img class="img-fluid" src="/media/gallery/@Model.Id/@image" alt="" /><br />
+				<a data-name="@image" class="deleteImage confirm mt-2 btn btn-sm btn-danger">delete</a>
 			</div>
 		}
 	}
@@ -136,7 +137,23 @@
 				dictRemoveFile: "File Remove"
 			});
 
+			$("a.deleteImage").on("click", function (e) {
+				e.preventDefault();
+
+				const $this = $(this);
+
+				const url = "/admin/products/DeleteImage";
+
+				const imageName = $this.data("name");
+				
+				$.post(url, { id: @Model.Id, imageName: imageName }, function(data)
+				{
+					$this.parent().fadeOut("Fast");
+				});
+			});
+
 		});
+
 	</script>
 }
 
