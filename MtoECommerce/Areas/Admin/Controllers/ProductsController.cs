@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using MtoECommerce.Infrastructure;
+using MtoECommerce.Models;
 
 namespace MtoECommerce.Areas.Admin.Controllers
 {
@@ -78,11 +79,10 @@ namespace MtoECommerce.Areas.Admin.Controllers
             return View(product);
         }
 
-
         public async Task<IActionResult> Edit(int id)
         {
             Product product = await _context.Products.FindAsync(id);
-            
+
             if (product == null) { return NotFound(); }
 
             ViewBag.Categories = new SelectList(_context.Categories, "Id", "Name", product.CategoryId);
@@ -100,7 +100,7 @@ namespace MtoECommerce.Areas.Admin.Controllers
             {
                 product.Slug = product.Name.ToLower().Replace(" ", "-");
 
-                var slug = await _context.Products.Where(x => x.Id != 
+                var slug = await _context.Products.Where(x => x.Id !=
                     product.Id).FirstOrDefaultAsync(x => x.Slug == product.Slug);
 
                 if (slug != null)
@@ -127,7 +127,7 @@ namespace MtoECommerce.Areas.Admin.Controllers
 
                     string filePath = Path.Combine(uploadsDir, imageName);
 
-                    FileStream fs = new FileStream(filePath, FileMode.Create);
+                    FileStream fs = new(filePath, FileMode.Create);
 
                     await product.ImageUpload.CopyToAsync(fs);
                     fs.Close();
@@ -144,6 +144,39 @@ namespace MtoECommerce.Areas.Admin.Controllers
             }
 
             return View(product);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UploadImages(int id)
+        {
+            var files = HttpContext.Request.Form.Files;
+
+            if (files.Any())
+            {
+                string rootFolder = Path.Combine(_webHostEnvironment.WebRootPath, "media/gallery/");
+                string uploadsDir = Path.Combine(rootFolder, id.ToString());
+
+                if (!Directory.Exists(uploadsDir))
+                {
+                    Directory.CreateDirectory(uploadsDir);
+                }
+
+                foreach (var file in files)
+                {
+                    string imageName = Guid.NewGuid().ToString() + "_" + file.FileName;
+
+                    string filePath = Path.Combine(uploadsDir, imageName);
+
+                    FileStream fs = new(filePath, FileMode.Create);
+
+                    await file.CopyToAsync(fs);
+                    fs.Close();
+                }
+
+                return Ok();
+            }
+
+            return View();
         }
     }
 }

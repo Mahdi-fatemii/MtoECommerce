@@ -57,7 +57,8 @@
 <div class="row mt-3">
 	<div class="col">
 		<h3>Upload Gallery Images</h3>
-		<form asp-action="UploadImages" class="dropzone" id="upload" enctype="multipart/form-data"></form>
+		<form asp-action="UploadImages" class="dropzone" id="upload" 
+		  enctype="multipart/form-data"></form>
 		<button id="btnupload" class="btn btn-success mt-3">Upload Files</button>
 	</div>
 </div>
@@ -71,6 +72,7 @@
 	<link href="https://unpkg.com/dropzone@6.0.0-beta.1/dist/dropzone.css" rel="stylesheet" type="text/css" />
 	
 	<script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
+	
 	<script>
 		CKEDITOR.replace('Description');
 
@@ -85,7 +87,7 @@
 				autoProcessQueue: false,
 				paramName: "File Upload",
 				maxFilesize: 5, //mb
-				maxThumbnailFilesize: 1, //mb
+				maxThumbnailFilesize: 2, //mb
 				maxFiles: 5,
 				parallelUploads: 5,
 				acceptedFiles: ".jpeg,.png,.jpg",
@@ -99,7 +101,7 @@
 						$(this).attr("disabled", "disabled");
 					});
 					dz.on("sending", function(file, xhr, formData) {
-						formData.append("id, @Model.Id")
+						formData.append("id", @Model.Id);
 					});
 				},
 				success: function (file) {
