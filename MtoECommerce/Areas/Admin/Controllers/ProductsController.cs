@@ -154,6 +154,45 @@ namespace MtoECommerce.Areas.Admin.Controllers
             return View(product);
         }
 
+        public async Task<IActionResult> Delete(int id)
+        {
+            Product product = await _context.Products.FindAsync(id);
+            if (product == null)
+            {
+                TempData["Error"] = "The product does not exist!";
+            }
+            else
+            {
+
+                if (!string.Equals(product.Image, "noimage.png"))
+                {
+                    string productImage = Path.Combine
+                    (_webHostEnvironment.WebRootPath, "media/products/" + product.Image);
+
+                    if (System.IO.File.Exists(productImage))
+                    {
+                        System.IO.File.Delete(productImage);
+                    }
+                }
+
+                string gallery = Path.Combine
+                (_webHostEnvironment.WebRootPath, "media/gallery/" + product.Id.ToString());
+
+                if (Directory.Exists(gallery))
+                {
+                    Directory.Delete(gallery, true);
+                }
+
+                _context.Products.Remove(product);
+                await _context.SaveChangesAsync();
+
+                TempData["Success"] = "The product has been deleted!";
+            }
+
+            return RedirectToAction("Index");
+        }
+
+
         [HttpPost]
         public async Task<IActionResult> UploadImages(int id)
         {
@@ -189,10 +228,10 @@ namespace MtoECommerce.Areas.Admin.Controllers
         [HttpPost]
         public void DeleteImage(int id, string imageName)
         {
-            string fullPath = Path.Combine(_webHostEnvironment.WebRootPath, "media/gallery/" + 
+            string fullPath = Path.Combine(_webHostEnvironment.WebRootPath, "media/gallery/" +
                 id.ToString() + "/" + imageName);
 
-            if (System.IO.File.Exists(fullPath)) 
+            if (System.IO.File.Exists(fullPath))
             {
                 System.IO.File.Delete(fullPath);
             }
