@@ -87,6 +87,14 @@ namespace MtoECommerce.Areas.Admin.Controllers
 
             ViewBag.Categories = new SelectList(_context.Categories, "Id", "Name", product.CategoryId);
 
+            string uploadsDir = Path.Combine(_webHostEnvironment.WebRootPath, "media/gallery/" + id.ToString());
+
+            if (Directory.Exists(uploadsDir))
+            {
+                product.GalleryImages = Directory.EnumerateFiles
+                    (uploadsDir).Select(x => Path.GetFileName(x));
+            }
+
             return View(product);
         }
 
@@ -153,8 +161,7 @@ namespace MtoECommerce.Areas.Admin.Controllers
 
             if (files.Any())
             {
-                string rootFolder = Path.Combine(_webHostEnvironment.WebRootPath, "media/gallery/");
-                string uploadsDir = Path.Combine(rootFolder, id.ToString());
+                string uploadsDir = Path.Combine(_webHostEnvironment.WebRootPath, "media/gallery/" + id.ToString());
 
                 if (!Directory.Exists(uploadsDir))
                 {

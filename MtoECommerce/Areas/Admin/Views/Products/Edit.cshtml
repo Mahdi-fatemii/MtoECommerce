@@ -55,10 +55,26 @@
 </div>
 
 <div class="row mt-3">
+	@if (Model.GalleryImages?.Any() != true)
+	{
+		<h4 style="color:red">Ther are no Gallery Images for this product</h4>
+	}
+	else
+	{
+		<h4 class="pb-3"> Gallery Images </h4>
+		@foreach (var image in Model.GalleryImages)
+		{
+			<div class="col-2">
+				<img class="img-fluid" src="/media/gallery/@Model.Id/@image" alt="" />
+			</div>
+		}
+	}
+</div>
+<div class="row mt-3">
 	<div class="col">
 		<h3>Upload Gallery Images</h3>
-		<form asp-action="UploadImages" class="dropzone" id="upload" 
-		  enctype="multipart/form-data"></form>
+		<form asp-action="UploadImages" class="dropzone" id="upload"
+			  enctype="multipart/form-data"></form>
 		<button id="btnupload" class="btn btn-success mt-3">Upload Files</button>
 	</div>
 </div>
@@ -70,9 +86,9 @@
 
 	<script src="https://unpkg.com/dropzone@6.0.0-beta.1/dist/dropzone-min.js"></script>
 	<link href="https://unpkg.com/dropzone@6.0.0-beta.1/dist/dropzone.css" rel="stylesheet" type="text/css" />
-	
+
 	<script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
-	
+
 	<script>
 		CKEDITOR.replace('Description');
 
